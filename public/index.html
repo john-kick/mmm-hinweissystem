@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html land="en">
+  <head>
+		<title>MMM-Hinweissystem</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content"width=device-width, inital-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+		<h1 id="page-title">MMM-Hinweissystem</h1>
+		<div id="page-content">
+			<div id="hintergrund-volume-wrapper">
+				<div class="center">
+					<label for="hintergrund-volume">Hintergrund-Lautstärke</label>
+					<input id="hintergrund-volume" type="range" min="0" max="100" value="100">
+				</div>
+			</div>
+			<div id="rooms-wrapper">
+				<div id="yellow-room" class="room">
+					<h2 class="title">A1: Gelber Raum</h2>
+					<span class="sound-title">Hintergrundsound</span>
+				</div>
+				<div id="orange-room" class="room">
+					<h2 class="title">A2: Orangener Raum</h2>
+					<span class="sound-title">Hintergrundsound</span>
+				</div>
+			</div>
+			<div id="cartwall">
+				<h2 class="title">CARTWALL</h2>
+				<div id="hintergrund-volume-wrapper">
+					<div class="center">
+						<label for="help-volume">Cartwall-Lautstärke</label>
+						<input id="help-volume" type="range" min="0" max="100" value="100">
+					</div>
+				</div>
+				<div class="carts"></div>
+			</div>
+		</div>
+    <script src="index.js"></script>
+  </body>
+</html>
