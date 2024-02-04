@@ -1,179 +1,223 @@
+/**
+ * Um Carts in der Cartwall hinzuzufügen, erstelle ein neues Objekt in diesem Format:
+ *
+ * {
+ * 		title: 			Titel
+ * 		tooltip: 		Hinweis-Tooltip
+ * 		filename: 	Name der Audiodatei. Muss im ordner /public/audio/hinweise/ enthalten sein.
+ * 		room: 			Optional. YELLOW_ROOM | ORANGE_ROOM | BOTH. Dieser Sound wird nur für den angegebenen Raum abgespielt. BOTH ist Standard
+ * }
+ */
 function getCarts() {
-	return [
-		{
-			title: "YOOO",
-			tooltip: "Me when kick ball",
-			audiofile: "yooooooooooo.mp3",
-			room: YELLOW_ROOM
-		},
-		{
-			title: "🗿",
-			tooltip: "🗿",
-			audiofile: "OOOOOAAAAAAAUUUUU.mp3",
-			room: ORANGE_ROOM
-		},
-		{
-			title: "Huh?",
-			tooltip: "I dunno",
-			audiofile: "Huh.mp3",
-			room: BOTH,
-			isEnd: true
-		}
-	];
+  return [
+    {
+      title: "Buzzer",
+      subtitle: "Buzzer sound effect",
+      tooltip: "Ich bin ein tooltip",
+      filename: "Buzzer wrong answer sound effect.mp3",
+      room: YELLOW_ROOM,
+    },
+    {
+      title: "Versteck aufgedeckt",
+      subtitle: "Ein Versteck wurde gefunden",
+      tooltip: "Ich bin ein tooltip",
+      filename: "Legend of Zelda Hidden Area Sound Effect.mp3",
+      room: ORANGE_ROOM,
+    },
+    {
+      title: "Spiel zuende",
+      subtitle: "Mario Coin sound effect",
+      tooltip: "Ich bin ein tooltip",
+      filename: "Mario coin sound effect.mp3",
+      room: BOTH,
+    },
+  ];
 }
 
+/**
+ * Hier werden die Hintergrundsound für die beiden Räume konfiguriert.
+ * Im moment ist nur ein Sound pro Raum möglich. Wenn ein Sound geändert werden soll,
+ * bitte nur den "filename" ändern.
+ */
 function getHintergrundSounds() {
-	return [
-		{
-			room: "yellow",
-			audiofile: `${HINTERGRUND_PATH}Aria Math.mp3`,
-		},
-		{
-			room: "orange",
-			audiofile: `${HINTERGRUND_PATH}Skyrim Theme.mp3`
-		}
-	];
+  return [
+    {
+      room: YELLOW_ROOM,
+      filename: "Aria Math.mp3",
+    },
+    {
+      room: ORANGE_ROOM,
+      filename: "Skyrim Theme.mp3",
+    },
+  ];
 }
+
+/**
+ * @param {Number} relVolume Relative volume. E.g. 0.5 halves the volume
+ * @param {*} ms
+ */
+async function fadeBackground(relVolume, ms) {
+  return new Promise((resolve) => {
+    hintergrundSounds.forEach((audio) => {
+      if (relVolume === 1) {
+        resolve();
+        return;
+      }
+
+      const target = audio.volume * relVolume;
+      const diff = audio.volume - target;
+
+      const stepSize = diff > 0 ? 0.1 : -0.1;
+      const steps = diff / stepSize;
+
+      let stepsTaken = 0;
+      const i = setInterval(() => {
+        audio.volume = Math.min(Math.max(audio.volume - stepSize, 0), 1);
+        stepsTaken++;
+        if (stepsTaken === steps) {
+          audio.volume = target;
+          clearInterval(i);
+          resolve();
+        }
+      }, ms / steps);
+    });
+  });
+}
+
+const lang = "de";
 
 const YELLOW_ROOM = -1;
-const BOTH = 0;
 const ORANGE_ROOM = 1;
+const BOTH = 0;
 
-const HINT_PATH = '.\\audio\\hinweise\\';
-const HINTERGRUND_PATH = '.\\audio\\hintergrundsound\\';
+const HINT_PATH = `.\\audio\\hinweise\\${lang}\\`;
+const HINTERGRUND_PATH = `.\\audio\\hintergrundsound\\`;
 
 const hintergrundSounds = [];
+const outroSounds = [];
 const helpSounds = [];
 
-function addCart({title, tooltip, audiofile, room=ORANGE_ROOM, isEnd=false}) {
-	const cart = document.createElement('div');
-	cart.classList.add('cart');
+function getPannedSound(filename, room) {
+  let snd = new Audio();
+  let src = document.createElement("source");
+  src.type = "audio/mpeg";
+  src.src = filename;
+  snd.appendChild(src);
 
-	if (isEnd) {
-		cart.classList.add('red');
-	} else {
-		if (room === ORANGE_ROOM) {
-			cart.classList.add('orange');
-		} else if (room === YELLOW_ROOM) {
-			cart.classList.add('yellow');
-		}
-	}
+  const audioCtx = new AudioContext();
+  const panNode = audioCtx.createStereoPanner();
 
-	const cartTitle = document.createElement('h4');
-	cartTitle.classList.add("cart-title");
-	cartTitle.innerHTML = title;
+  const source = audioCtx.createMediaElementSource(snd);
+  source.connect(panNode);
+  panNode.connect(audioCtx.destination);
 
-	const cartTooltip = document.createElement('span');
-	cartTooltip.classList.add("cart-help");
-	cartTooltip.innerHTML = tooltip;
-
-	cart.append(cartTitle, getCartAudioButton(audiofile, room), cartTooltip);
-
-	document.querySelector('.carts').append(cart);
+  panNode.pan.setValueAtTime(room, audioCtx.currentTime);
+  return snd;
 }
 
-function getCartAudioButton(hintName, room) {
-	let snd  = new Audio();
-	let src  = document.createElement('source');
-	src.type = 'audio/mpeg';
-	src.src  = HINT_PATH + hintName;
-	snd.appendChild(src);
+function addHint({ title, subtitle, tooltip, filename, room = BOTH }) {
+  const template = document.querySelector("#hint-template");
 
-	const audioCtx = new AudioContext();
-	const panNode = audioCtx.createStereoPanner();
+  const cart = document
+    .importNode(template.content, true)
+    .querySelector(".cart");
 
-	const source = audioCtx.createMediaElementSource(snd);
-	source.connect(panNode);
-	panNode.connect(audioCtx.destination);
+  if (room === ORANGE_ROOM) {
+    cart.classList.add("orange");
+  } else if (room === YELLOW_ROOM) {
+    cart.classList.add("yellow");
+  }
 
-	panNode.pan.setValueAtTime(room, audioCtx.currentTime);
+  const cartTitle = cart.querySelector(".cart-title");
+  cartTitle.innerHTML = title;
 
-	const playButton = document.createElement('button');
-	playButton.classList.add("cart-button");
-	playButton.textContent = "Play";
-	playButton.onclick = () => {
-		snd.play();
-		snd.onended = () => {
-			snd.currentTime = 0;
-		}
-	}
+  const cartSubtitle = cart.querySelector(".cart-subtitle");
+  cartSubtitle.innerHTML = subtitle;
 
-	helpSounds.push(snd);
+  const cartTooltip = cart.querySelector(".cart-tooltip");
+  cartTooltip.title = tooltip;
 
-	return playButton;
+  playButton = cart.querySelector(".cart-play");
+  tooptipButton = cart.querySelector(".cart-tooltip");
+  stopButton = cart.querySelector(".cart-stop");
+
+  const snd = getPannedSound(HINT_PATH + filename, room);
+  helpSounds.push(snd);
+
+  playButton.onclick = () => {
+    hintPlayBehavior(snd);
+  };
+  stopButton.onclick = () => {
+    snd.pause();
+    snd.currentTime = 0;
+  };
+
+  document.querySelector(".carts").append(cart);
+}
+
+async function hintPlayBehavior(snd) {
+  let skipFadeout = false;
+  helpSounds.forEach((sound) => {
+    skipFadeout = skipFadeout || !sound.paused;
+    sound.pause();
+    sound.currentTime = 0;
+  });
+  if (!skipFadeout) {
+    await fadeBackground(0.2, 200);
+  }
+  snd.play();
+  // Possible improvement: Stop fading in if sound was interrupted by another sound
+  snd.onended = async () => {
+    snd.currentTime = 0;
+    await fadeBackground(5, 200);
+  };
 }
 
 function setupRooms() {
-	const music = getHintergrundSounds();
+  const music = getHintergrundSounds();
 
-	music.forEach(({room, audiofile}) => {
-		const roomEl = document.querySelector(`#${room}-room`);
-		var bgAudio  = new Audio();
-		hintergrundSounds.push(bgAudio);
-		var src  = document.createElement('source');
-		src.type = 'audio/mpeg';
-		src.src  = audiofile;
-		bgAudio.appendChild(src);
-	
-		const audioCtx = new AudioContext();
-		const panNode = audioCtx.createStereoPanner();
-	
-		const source = audioCtx.createMediaElementSource(bgAudio);
-		source.connect(panNode);
-		panNode.connect(audioCtx.destination);
-	
-		panNode.pan.setValueAtTime(room === 'yellow' ? YELLOW_ROOM : ORANGE_ROOM, audioCtx.currentTime);
-	
-		const play = document.createElement('button');
-		const pause = document.createElement('button');
-		const stop = document.createElement('button');
-	
-		play.innerHTML = "Play";
-		play.onclick = () => {
-			bgAudio.play();
-			bgAudio.onended = () => {
-				bgAudio.currentTime = 0;
-				bgAudio.play();
-			}
-		}
-	
-		pause.innerHTML = "Pause";
-		pause.onclick = () => {
-			bgAudio.pause();
-		};
-	
-		stop.innerHTML = "Stop";
-		stop.onclick = () => {
-			bgAudio.pause();
-			bgAudio.currentTime = 0;
-		}
+  music.forEach(({ room, filename }) => {
+    const roomStr = room === YELLOW_ROOM ? "yellow" : "orange";
+    const roomEl = document.querySelector(`#room-${roomStr}`);
+    const snd = getPannedSound(HINTERGRUND_PATH + filename, room);
+    hintergrundSounds.push(snd);
 
-		const buttonWrapper = document.createElement('div');
-		buttonWrapper.append(play, pause, stop);
-		roomEl.append(buttonWrapper);
-	});
+    const play = roomEl.querySelector(`#play-${roomStr}`);
+    const pause = roomEl.querySelector(`#pause-${roomStr}`);
+    const stop = roomEl.querySelector(`#stop-${roomStr}`);
+
+    play.onclick = () => {
+      snd.play();
+      snd.onended = () => {
+        snd.currentTime = 0;
+        snd.play();
+      };
+    };
+
+    pause.onclick = () => {
+      snd.pause();
+    };
+
+    stop.onclick = () => {
+      snd.ended = true;
+      snd.pause();
+    };
+  });
 }
 
 function setup() {
-	const hintergrundVolume = document.querySelector('#hintergrund-volume');
-	hintergrundVolume.oninput = () => {
-		hintergrundSounds.forEach((sound) => {
-			sound.volume = hintergrundVolume.value/100;
-		});
-	}
+  const masterVolume = document.querySelector("#master-volume");
+  masterVolume.oninput = () => {
+    hintergrundSounds.concat(outroSounds, helpSounds).forEach((sound) => {
+      sound.volume = masterVolume.value / 100;
+    });
+  };
 
-	const helpVolume = document.querySelector('#help-volume');
-	helpVolume.oninput = () => {
-		helpSounds.forEach((sound) => {
-			sound.volume = helpVolume.value/100;
-		});
-	}
+  getCarts().forEach((cart) => {
+    addHint(cart);
+  });
 
-	getCarts().forEach((cart) => {
-		addCart(cart);
-	});
-
-	setupRooms();
+  setupRooms();
 }
 
 setup();

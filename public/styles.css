@@ -19,6 +19,11 @@ body {
 	margin-bottom: 20px;
 }
 
+#master-volume {
+	min-width: 300px;
+	width: 30%;
+}
+
 .center {
 	text-align: center;
 }
@@ -29,18 +34,13 @@ label {
 	color: #666;
 }
 
-#master-volume {
-	min-width: 300px;
-	width: 30%;
-}
-
 #rooms-wrapper {
 	display: flex;
-	justify-content: space-between; /* Align rooms next to each other */
+	justify-content: space-between;
 }
 
 .room {
-	width: 48%; /* Set width to leave some space between rooms */
+	width: 48%;
 	box-sizing: border-box;
 	background-color: #fff;
 	border: 1px solid #ddd;
@@ -78,7 +78,6 @@ button {
 	justify-content: space-between;
 }
 
-/* Added styles for carts */
 .cart {
 	display: flex;
 	align-items: center;
@@ -87,8 +86,9 @@ button {
 	box-sizing: border-box;
 	padding: 10px;
 	margin-bottom: 20px;
-	border: 1px solid #ddd; /* Add this line for the border */
+	border: 1px solid #ddd;
 	border-radius: 20px;
+	background-color: #ffffff;
 }
 
 .cart > * {
@@ -111,9 +111,4 @@ button {
 
 .orange {
 	background-color: #f29019;
-;
-}
-
-.red {
-	background-color: brown;
 }
