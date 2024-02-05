@@ -1,37 +1,73 @@
 /**
  * Um Carts in der Cartwall hinzuzufügen, erstelle ein neues Objekt in diesem Format:
  *
- * {
- * 		title: 			Titel
- * 		tooltip: 		Hinweis-Tooltip
- * 		filename: 	Name der Audiodatei. Muss im ordner /public/audio/hinweise/ enthalten sein.
- * 		room: 			Optional. YELLOW_ROOM | ORANGE_ROOM | BOTH. Dieser Sound wird nur für den angegebenen Raum abgespielt. BOTH ist Standard
- * }
+ * 	{
+ * 		de: {
+ * 			title: 			Deutscher Titel
+ * 			subtitle:		Deutscher Untertitel
+ * 			tooltip: 		Deutscher Hinweis-Tooltip
+ * 			filename: 	Name der deutschen Audiodatei. Muss im ordner /public/audio/hinweise/de/ enthalten sein.
+ * 		},
+ * 		en: {
+ * 			title:			Englischer Titel
+ * 			tooltip:		Englischer Hinweis-Tooltip
+ * 			filename:		Name der englischen Audiodatei. Muss im ordner/public/audio/hinweise/en/ enthalten sein.
+ * 		}
+ * 		room:		Optional. YELLOW_ROOM | ORANGE_ROOM | BOTH. Dieser Sound wird nur für den angegebenen Raum abgespielt. BOTH ist Standard
+ * 	}
  */
-function getCarts() {
+function getHints() {
   return [
     {
-      title: "Buzzer",
-      subtitle: "Buzzer sound effect",
-      tooltip: "Ich bin ein tooltip",
-      filename: "Buzzer wrong answer sound effect.mp3",
+      de: {
+        title: "Buzzer",
+        subtitle: "Buzzer sound effect",
+        tooltip: "Ich bin ein tooltip",
+        filename: "Buzzer wrong answer sound effect.mp3",
+      },
+      en: {
+        title: "Guitar",
+        subtitle: "Sick guitar riff",
+        tooltip: "I am a tooltip",
+        filename: "Guitar riff meme.mp3",
+      },
       room: YELLOW_ROOM,
     },
     {
-      title: "Versteck aufgedeckt",
-      subtitle: "Ein Versteck wurde gefunden",
-      tooltip: "Ich bin ein tooltip",
-      filename: "Legend of Zelda Hidden Area Sound Effect.mp3",
+      de: {
+        title: "Versteck aufgedeckt",
+        subtitle: "Ein Versteck wurde gefunden",
+        tooltip: "Ich bin ein tooltip",
+        filename: "Legend of Zelda Hidden Area Sound Effect.mp3",
+      },
+      en: {
+        title: "Good evening, soab!",
+        subtitle: "Kind evening from swidish guy",
+        tooltip: "I am a tooltip",
+        filename: "Guten Abend Hurensohn.mp3",
+      },
       room: ORANGE_ROOM,
     },
     {
-      title: "Spiel zuende",
-      subtitle: "Mario Coin sound effect",
-      tooltip: "Ich bin ein tooltip",
-      filename: "Mario coin sound effect.mp3",
+      de: {
+        title: "Spiel zuende",
+        subtitle: "Mario Coin sound effect",
+        tooltip: "Ich bin ein tooltip",
+        filename: "Mario coin sound effect.mp3",
+      },
+      en: {
+        title: "Puddin' eatin'",
+        subtitle: "EAT THE PUDDIN EAT THE PUDDIN EAT THE PUDDIN",
+        tooltip: "I am a tooltip",
+        filename: "issdenpuddingissdenpuddingissdenpuddingissdenpudding.mp3",
+      },
       room: BOTH,
     },
   ];
+}
+
+function getOutroSounds() {
+  return [];
 }
 
 /**
@@ -54,7 +90,7 @@ function getHintergrundSounds() {
 
 /**
  * @param {Number} relVolume Relative volume. E.g. 0.5 halves the volume
- * @param {*} ms
+ * @param {Number} ms
  */
 async function fadeBackground(relVolume, ms) {
   return new Promise((resolve) => {
@@ -84,13 +120,13 @@ async function fadeBackground(relVolume, ms) {
   });
 }
 
-const lang = "de";
+let lang = "de";
 
 const YELLOW_ROOM = -1;
 const ORANGE_ROOM = 1;
 const BOTH = 0;
 
-const HINT_PATH = `.\\audio\\hinweise\\${lang}\\`;
+const HINT_PATH = `.\\audio\\hinweise\\`;
 const HINTERGRUND_PATH = `.\\audio\\hintergrundsound\\`;
 
 const hintergrundSounds = [];
@@ -115,7 +151,35 @@ function getPannedSound(filename, room) {
   return snd;
 }
 
-function addHint({ title, subtitle, tooltip, filename, room = BOTH }) {
+async function switchLanguage() {
+  const cartwall = document.querySelector("#cartwall");
+  const carts = cartwall.querySelectorAll(".cart");
+
+  carts.forEach((cart) => {
+    cart.remove();
+  });
+
+  lang = lang === "de" ? "en" : "de";
+
+  // Stop all sounds
+  outroSounds.concat(helpSounds).forEach((sound) => {
+    sound.pause();
+    sound.ended = true;
+  });
+
+  // Set background sounds to 100%
+  hintergrundSounds.forEach((sound) => {
+    sound.volume = document.querySelector("#master-volume").value / 100;
+  });
+
+  // Clear the language dependant sound arrays
+  outroSounds.length = 0;
+  helpSounds.length = 0;
+
+  setupHints();
+}
+
+function addHint({ title, subtitle, tooltip, filename }, room = BOTH) {
   const template = document.querySelector("#hint-template");
 
   const cart = document
@@ -141,7 +205,7 @@ function addHint({ title, subtitle, tooltip, filename, room = BOTH }) {
   tooptipButton = cart.querySelector(".cart-tooltip");
   stopButton = cart.querySelector(".cart-stop");
 
-  const snd = getPannedSound(HINT_PATH + filename, room);
+  const snd = getPannedSound(HINT_PATH + `${lang}\\` + filename, room);
   helpSounds.push(snd);
 
   playButton.onclick = () => {
@@ -171,6 +235,12 @@ async function hintPlayBehavior(snd) {
     snd.currentTime = 0;
     await fadeBackground(5, 200);
   };
+}
+
+function setupHints() {
+  getHints().forEach((cart) => {
+    addHint(cart[lang], cart["room"]);
+  });
 }
 
 function setupRooms() {
@@ -213,11 +283,10 @@ function setup() {
     });
   };
 
-  getCarts().forEach((cart) => {
-    addHint(cart);
-  });
-
+  setupHints();
   setupRooms();
+
+  document.querySelector("#language-toggle").onclick = switchLanguage;
 }
 
 setup();
