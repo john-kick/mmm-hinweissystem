@@ -23,48 +23,47 @@ function getHints() {
   return [
     {
       de: {
-        title: "Buzzer",
-        subtitle: "Buzzer sound effect",
-        tooltip: "Ich bin ein tooltip",
-        filename: "Buzzer wrong answer sound effect.mp3",
+        title: "Münze",
+        subtitle: "Münze wird eingesammelt",
+        tooltip: '"Ka-Ching!"',
+        filename: "Coin.mp3",
       },
       en: {
-        title: "Guitar",
-        subtitle: "Sick guitar riff",
-        tooltip: "I am a tooltip",
-        filename: "Guitar riff meme.mp3",
+        title: "Harp",
+        subtitle: "Dreamy harp melody",
+        tooltip: "A harp plays",
+        filename: "Harp.mp3",
       },
       room: YELLOW_ROOM,
     },
     {
       de: {
         title: "Versteck aufgedeckt",
-        subtitle: "Ein Versteck wurde gefunden",
-        tooltip: "Ich bin ein tooltip",
-        filename: "Legend of Zelda Hidden Area Sound Effect.mp3",
+        subtitle: "Ein Versteck wurde aufgedeckt",
+        tooltip: "Mysteriöses Geräusch",
+        filename: "Reveal.mp3",
       },
       en: {
-        title: "Good evening, soab!",
-        subtitle: "Kind evening from swidish guy",
-        tooltip: "I am a tooltip",
-        filename: "Guten Abend Hurensohn.mp3",
+        title: "Notification",
+        subtitle: "Samsung notification sound",
+        tooltip: '"Doo dee di dap dap"',
+        filename: "Notification.mp3",
       },
       room: ORANGE_ROOM,
     },
     {
       de: {
-        title: "Spiel zuende",
-        subtitle: "Mario Coin sound effect",
-        tooltip: "Ich bin ein tooltip",
-        filename: "Mario coin sound effect.mp3",
+        title: "Rollenvergabe",
+        subtitle: "Aus Hit-Spiel Among Us",
+        tooltip: "Verdächtiges Geräusch",
+        filename: "RoleReveal.mp3",
       },
       en: {
-        title: "Puddin' eatin'",
-        subtitle: "EAT THE PUDDIN EAT THE PUDDIN EAT THE PUDDIN",
-        tooltip: "I am a tooltip",
-        filename: "issdenpuddingissdenpuddingissdenpuddingissdenpudding.mp3",
+        title: "Airhorn",
+        subtitle: "Warning: Loud!",
+        tooltip: "Loud airhorn",
+        filename: "Airhorn.mp3",
       },
-      room: BOTH,
     },
   ];
 }
@@ -72,7 +71,7 @@ function getHints() {
 /**
  * Konfiguration der Outros. Spielen immer fuer beide Raeume.
  */
-function getOutroSounds() {
+function getOutros() {
   return {
     de: {
       winner: "win.mp3",
@@ -90,15 +89,15 @@ function getOutroSounds() {
  * Im Moment nur ein Sound pro Raum moeglich.
  * Wenn ein Sound geaendert werden soll, nur den "filename" aendern.
  */
-function getHintergrundSounds() {
+function getBackgroundSounds() {
   return [
     {
       room: YELLOW_ROOM,
-      filename: "Aria Math.mp3",
+      filename: "left.mp3",
     },
     {
       room: ORANGE_ROOM,
-      filename: "Skyrim Theme.mp3",
+      filename: "right.mp3",
     },
   ];
 }
@@ -109,8 +108,8 @@ let lang = "de"; // Sprache der outros und hinweise
 // Alle Ordner muessen innerhalb des "public" Ordners liegen.
 // HINT_PATH und OUTRO_PATH muessen die Ordner "de" und "en" enthalten, in welchen die Audiodateien vorhanden sein muessen.
 const HINT_PATH = ".\\audio\\hinweise\\";
-const OUTRO_PATH = ".\\audio\\outros\\";
-const HINTERGRUND_PATH = ".\\audio\\hintergrundsound\\";
+const OUTRO_PATH = ".\\audio\\outro\\";
+const HINTERGRUND_PATH = ".\\audio\\hintergrund\\";
 
 // Dauer des Fadens bis die Ziellautstärke erreicht wird. In Millisekunden
 const FADE_DURATION = 1000;
@@ -244,7 +243,7 @@ async function fadeBackground(target) {
         );
       });
 
-      console.log(`${++stepsTaken}/${FADE_STEPS}`, refAudio.volume);
+      stepsTaken++;
 
       // Stop if target has been reached or overshot
       if (stepsTaken >= FADE_STEPS) {
@@ -286,6 +285,7 @@ function addHint({ title, subtitle, tooltip, filename }, room = BOTH) {
 
   // Initialize audio buttons
   playButton = cart.querySelector(".playbutton");
+  tooltipButton = cart.querySelector(".tooltipbutton");
   stopButton = cart.querySelector(".stopbutton");
 
   const snd = getPannedSound(HINT_PATH + `${lang}\\` + filename, room);
@@ -294,7 +294,9 @@ function addHint({ title, subtitle, tooltip, filename }, room = BOTH) {
   playButton.onclick = () => {
     hintPlayBehavior(snd);
   };
+
   tooltipButton.title = tooltip;
+
   stopButton.onclick = () => {
     snd.pause();
     snd.currentTime = 0;
@@ -408,7 +410,7 @@ async function outroPlayBehavior(sound) {
  */
 function setupRooms() {
   // Receive the two audio files, one for each room
-  const music = getHintergrundSounds();
+  const music = getBackgroundSounds();
 
   music.forEach(({ room, filename }) => {
     // Generate audio object
@@ -447,7 +449,7 @@ function setupRooms() {
  * Audio files are configured at the top of this file.
  */
 function setupOutros() {
-  const outros = getOutroSounds()[lang];
+  const outros = getOutros()[lang];
   addOutro(lang === "de" ? "Sieger" : "Winner", outros["winner"]);
   addOutro(lang === "de" ? "Verlierer" : "Loser", outros["loser"]);
 }
@@ -467,7 +469,6 @@ function setupHints() {
 function setup() {
   // Initialize the master volume controller
   masterVolume.oninput = () => {
-    console.log(masterVolume.value);
     backgroundSounds.concat(outroSounds, helpAudios).forEach((sound) => {
       sound.volume = masterVolume.value;
     });
