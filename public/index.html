@@ -20,60 +20,64 @@
     </div>
     <div id="page-content">
       <div id="master-volume-wrapper">
-        <div class="center">
+        <center>
           <label for="master-volume">Master-Lautstärke</label>
           <input
             id="master-volume"
             type="range"
             min="0"
-            max="100"
-            value="100"
+            max="1"
+            value="1"
+            step="0.01"
           />
-        </div>
+        </center>
       </div>
       <div id="rooms-wrapper">
         <div id="room-yellow" class="room">
           <h2 class="title">A1: Gelber Raum</h2>
           <p class="sound-title">Soundtrack</p>
           <div>
-            <button id="play-yellow">Play</button>
-            <button id="pause-yellow">Pause</button>
-            <button id="stop-yellow">Stop</button>
+            <button class="playbutton">Play</button>
+            <button class="pausebutton">Pause</button>
+            <button class="stopbutton">Stop</button>
           </div>
         </div>
         <div id="room-orange" class="room">
           <h2 class="title">A2: Orangener Raum</h2>
           <p class="sound-title">Soundtrack</p>
           <div>
-            <button id="play-orange">Play</button>
-            <button id="pause-orange">Pause</button>
-            <button id="stop-orange">Stop</button>
+            <button class="playbutton">Play</button>
+            <button class="pausebutton">Pause</button>
+            <button class="stopbutton">Stop</button>
           </div>
         </div>
       </div>
-      <div id="cartwall">
+      <div id="outro-container">
+        <h2 class="title">Outros</h2>
+        <div id="outros" class="carts"></div>
+      </div>
+      <div id="cartwall-container">
         <h2 class="title">CARTWALL</h2>
-        <div class="carts"></div>
+        <div id="cartwall"></div>
       </div>
     </div>
     <template id="outro-template">
-      <div class="cart">
-        <h4 class="cart-title">Spiel zuende</h4>
-        <span class="cart-subtitle">Mario Coin sound effect</span>
-        <div>
-          <button class="cart-play">Play</button>
-          <button class="cart-stop">Stop</button>
+      <div class="outrocart">
+        <h4 class="title"></h4>
+        <div class="cart-button-wrapper">
+          <button class="playbutton">Play</button>
+          <button class="stopbutton">Stop</button>
         </div>
       </div>
     </template>
     <template id="hint-template">
       <div class="cart">
-        <p class="cart-title"></p>
-        <p class="cart-subtitle"></p>
+        <h4 class="title"></h4>
+        <p class="subtitle"></p>
         <div class="cart-button-wrapper">
-          <button class="cart-play">Play</button>
-          <button class="cart-tooltip">Tip</button>
-          <button class="cart-stop">Stop</button>
+          <button class="playbutton">Play</button>
+          <button class="tooltipbutton">Tip</button>
+          <button class="stopbutton">Stop</button>
         </div>
       </div>
     </template>

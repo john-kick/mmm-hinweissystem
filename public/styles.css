@@ -15,6 +15,10 @@ body {
   padding: 20px;
 }
 
+#page-content > * {
+  margin-bottom: 20px;
+}
+
 #master-volume-wrapper {
   margin-bottom: 20px;
 }
@@ -22,10 +26,6 @@ body {
 #master-volume {
   min-width: 300px;
   width: 30%;
-}
-
-.center {
-  text-align: center;
 }
 
 label {
@@ -44,14 +44,20 @@ label {
   box-sizing: border-box;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 20px;
   display: flex;
   flex-flow: column;
   align-items: center;
 }
 
+.room,
+.cart,
+.outrocart {
+  background-color: beige;
+}
+
 .title {
+  font-weight: bold;
+  margin-top: 10px;
   color: #333;
   text-align: center;
 }
@@ -72,26 +78,36 @@ button {
   border: 1px solid black;
 }
 
-.button-matrix {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+#outro-container {
+  background-color: cadetblue;
 }
 
-.cart {
+#cartwall-container {
+  background-color: lightgray;
+}
+
+.room,
+#outro-container,
+#cartwall-container {
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.cart,
+.outrocart {
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 30%;
+  min-width: 200px;
   box-sizing: border-box;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 20px;
-  background-color: #ffffff;
 }
 
-.cart > * {
+.cart > *,
+.outrocart > * {
   margin-bottom: 5px;
 }
 
@@ -99,14 +115,12 @@ button {
   margin-top: auto;
 }
 
-.carts {
+#outros,
+#cartwall {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.cart-title {
-  margin-top: 10px;
+  justify-content: center;
+  gap: 10px;
 }
 
 .yellow {
@@ -143,23 +157,23 @@ button {
 }
 
 input.check-toggle-round-flat:checked ~ .off {
-  color: #f36f25 !important;
+  color: darkred !important;
 }
 
 input.check-toggle-round-flat:checked ~ .on {
-  color: #fff !important;
+  color: beige !important;
 }
 
 #lang-switch > span.on {
   left: 0;
   padding-left: 2px;
-  color: #f36f25;
+  color: darkred;
 }
 
 #lang-switch > span.off {
   right: 0;
   padding-right: 4px;
-  color: #fff;
+  color: beige;
 }
 
 .check-toggle {
@@ -182,7 +196,7 @@ input.check-toggle-round-flat + label {
   padding: 2px;
   width: 97px;
   height: 35px;
-  background-color: #f36f25;
+  background-color: darkred;
   -webkit-border-radius: 60px;
   -moz-border-radius: 60px;
   -ms-border-radius: 60px;
@@ -201,7 +215,7 @@ input.check-toggle-round-flat + label:before {
   left: 2px;
   bottom: 2px;
   right: 2px;
-  background-color: #f36f25;
+  background-color: darkred;
 
   -moz-border-radius: 60px;
   -ms-border-radius: 60px;
@@ -213,7 +227,7 @@ input.check-toggle-round-flat + label:after {
   left: 4px;
   bottom: 4px;
   width: 48px;
-  background-color: #fff;
+  background-color: beige;
   -webkit-border-radius: 52px;
   -moz-border-radius: 52px;
   -ms-border-radius: 52px;
