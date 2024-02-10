@@ -4,6 +4,12 @@ import { fadeBackground } from "../../VolumeControl";
 
 const HINT_PATH = ".\\audio\\hinweise\\";
 
+export interface HintJSONData {
+  de: HintLanguageData;
+  en: HintLanguageData;
+  room?: string;
+}
+
 interface HintLanguageData {
   title: string;
   subtitle: string;
@@ -82,10 +88,10 @@ export default class Hint extends Playable {
       .querySelector(".cart") as HTMLDivElement;
 
     // Apply color if room specific
-    if (this.hintData.room === Room.ORANGE_ROOM) {
-      cart.classList.add("orange");
-    } else if (this.hintData.room === Room.YELLOW_ROOM) {
+    if (this.hintData.room === Room.YELLOW_ROOM) {
       cart.classList.add("yellow");
+    } else if (this.hintData.room === Room.ORANGE_ROOM) {
+      cart.classList.add("orange");
     }
 
     // Apply title, subtitle and tooltip
@@ -97,10 +103,9 @@ export default class Hint extends Playable {
     ) as HTMLParagraphElement;
     cartSubtitle.innerHTML = usedData.subtitle;
 
-    const cartTooltip = cart.querySelector(
-      ".tooltipbutton"
-    ) as HTMLButtonElement;
-    cartTooltip.title = usedData.transcript;
+    const cartTooltip = cart.querySelector(".tooltiptext") as HTMLButtonElement;
+    cartTooltip.innerText = usedData.transcript;
+    console.log(usedData.transcript);
 
     // Initialize audio buttons
     const playButton = cart.querySelector(".playbutton") as HTMLButtonElement;

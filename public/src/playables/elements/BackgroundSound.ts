@@ -2,6 +2,11 @@ import Playable, { Room } from "./Playable";
 
 const BACKGROUNDSOUND_PATH = ".\\audio\\hintergrundsound\\";
 
+export interface BackgroundSoundJSONData {
+  filename: string;
+  room: string;
+}
+
 export interface BackgroundSoundData {
   filename: string;
   room: Room;

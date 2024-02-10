@@ -1,9 +1,10 @@
-import Hint, { HintData } from "./playables/elements/Hint";
+import Hint, { HintData, HintJSONData } from "./playables/elements/Hint";
 import Outro, { OutroData } from "./playables/elements/Outro";
 import BackgroundSound, {
   BackgroundSoundData,
+  BackgroundSoundJSONData,
 } from "./playables/elements/BackgroundSound";
-import playables from "./playables/config/playables";
+import { Room } from "./playables/elements/Playable";
 
 interface BackgroundSounds {
   sound1: BackgroundSound;
@@ -11,6 +12,10 @@ interface BackgroundSounds {
 }
 
 export default class App {
+  private hintsData!: HintData[];
+  private outrosData!: OutroData[];
+  private backgroundsoundsData!: BackgroundSoundData[];
+
   constructor() {
     const masterVolumeEl = document.querySelector(
       "#master-volume"
@@ -37,10 +42,8 @@ export default class App {
   private static instance: App;
   public static getInstance(): App {
     if (!App.instance) {
-      console.log("new instance");
       App.instance = new App();
     }
-    console.log("got instance");
     return App.instance;
   }
 
@@ -66,8 +69,8 @@ export default class App {
     this.hints.length = 0;
     this.outros.length = 0;
 
-    this.setupHints(playables.hints);
-    this.setupOutros(playables.outros);
+    this.setupHints();
+    this.setupOutros();
   }
 
   public getBackgroundsoundsArray(): BackgroundSound[] {
@@ -82,29 +85,93 @@ export default class App {
 
   public masterVolume: number = 1;
 
-  private setupHints(hints: HintData[]) {
-    hints.forEach((hintData: HintData) => {
+  private setupHints() {
+    this.hintsData.forEach((hintData: HintData) => {
       this.hints.push(new Hint(hintData));
     });
   }
 
-  private setupOutros(outros: OutroData[]) {
-    outros.forEach((outroData: OutroData) => {
+  private setupOutros() {
+    this.outrosData.forEach((outroData: OutroData) => {
       this.outros.push(new Outro(outroData));
     });
   }
 
-  private setupBackgroundSounds(backgroundSoundsData: BackgroundSoundData[]) {
-    const rooms = document.querySelector("rooms-wrapper") as HTMLDivElement;
+  private setupBackgroundSounds() {
     this.backgroundSounds = {
-      sound1: new BackgroundSound(backgroundSoundsData[0]),
-      sound2: new BackgroundSound(backgroundSoundsData[1]),
+      sound1: new BackgroundSound(this.backgroundsoundsData[0]),
+      sound2: new BackgroundSound(this.backgroundsoundsData[1]),
     };
   }
 
-  public setup() {
-    this.setupHints(playables.hints);
-    this.setupOutros(playables.outros);
-    this.setupBackgroundSounds(playables.backgroundsounds);
+  setupTooltipBehavior() {
+    document.querySelectorAll(".tooltipbutton").forEach((tooltipbutton) => {
+      const tooltip = tooltipbutton.querySelector(".tooltip") as HTMLDivElement;
+      tooltip.onclick = (event: MouseEvent) => {
+        event.stopPropagation();
+      };
+      const offclickBehavior = (event: MouseEvent) => {
+        if (
+          tooltipbutton.classList.contains("active") &&
+          !(event.target === tooltip || event.target === tooltipbutton)
+        ) {
+          tooltipbutton.classList.remove("active");
+          document.removeEventListener("click", offclickBehavior);
+        }
+      };
+      tooltipbutton.addEventListener("click", () => {
+        if (tooltipbutton.classList.contains("active")) {
+          tooltipbutton.classList.remove("active");
+        } else {
+          tooltipbutton.classList.add("active");
+          document.addEventListener("click", offclickBehavior);
+        }
+      });
+    });
+  }
+
+  public async setup() {
+    await fetch("./soundConfig/hints.json")
+      .then((res) => res.json())
+      .then((data: HintJSONData[]) => {
+        this.hintsData = data.map((hintData: HintJSONData) => {
+          return {
+            de: hintData.de,
+            en: hintData.en,
+            room:
+              hintData.room === "gelb"
+                ? Room.YELLOW_ROOM
+                : hintData.room === "orange"
+                ? Room.ORANGE_ROOM
+                : Room.BOTH,
+          };
+        });
+      });
+
+    await fetch("./soundConfig/outros.json")
+      .then((res) => res.json())
+      .then((data) => {
+        this.outrosData = data;
+      });
+
+    await fetch("./soundConfig/backgroundSounds.json")
+      .then((res) => res.json())
+      .then((data: BackgroundSoundJSONData[]) => {
+        this.backgroundsoundsData = data.map((backgroundsoundData) => {
+          return {
+            filename: backgroundsoundData.filename,
+            room:
+              backgroundsoundData.room === "gelb"
+                ? Room.YELLOW_ROOM
+                : Room.ORANGE_ROOM,
+          };
+        });
+      });
+
+    this.setupHints();
+    this.setupOutros();
+    this.setupBackgroundSounds();
+
+    this.setupTooltipBehavior();
   }
 }

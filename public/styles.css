@@ -242,3 +242,31 @@ input.check-toggle-round-flat + label:after {
 input.check-toggle-round-flat:checked + label:after {
   margin-left: 44px;
 }
+
+/* Tooltip stuff */
+.tooltipbutton {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  cursor: pointer;
+}
+
+.tooltipbutton .tooltip {
+  top: -10px;
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  position: absolute;
+  z-index: 1;
+
+  transform: translate(-50%, -100%);
+}
+
+.tooltipbutton.active .tooltip {
+  visibility: visible;
+}

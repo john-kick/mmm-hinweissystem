@@ -2,10 +2,16 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
-const port = 3003;
+const port = 3000;
 
 app.get("/audio/*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "audio", req.params[0]));
+});
+
+app.get("/soundConfig/*", (req, res) => {
+  const filePath = path.join(__dirname, "..", "soundConfig", req.params[0]);
+  res.set("Content-Type", "application/json");
+  res.sendFile(filePath);
 });
 
 app.get("/", (req, res) => {
