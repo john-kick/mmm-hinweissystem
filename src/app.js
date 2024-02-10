@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 
 const app = express();
-const port = 3000;
+const port = 3003;
 
 app.get("/audio/*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "audio", req.params[0]));
