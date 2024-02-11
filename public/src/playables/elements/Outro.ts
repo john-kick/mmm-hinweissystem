@@ -77,10 +77,10 @@ export default class Outro extends Playable {
     // Get the cart element
     const cart = document
       .importNode(Outro.outroTemplate.content, true)
-      .querySelector(".outrocart") as HTMLDivElement;
+      .querySelector(".cart") as HTMLDivElement;
 
     // Set the title
-    const cartTitle = cart.querySelector(".title") as HTMLHeadingElement;
+    const cartTitle = cart.querySelector("h4") as HTMLHeadingElement;
     cartTitle.innerHTML = usedData.title;
 
     // Initialize sound control

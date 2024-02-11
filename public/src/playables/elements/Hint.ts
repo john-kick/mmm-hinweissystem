@@ -24,9 +24,6 @@ export interface HintData {
 }
 
 export default class Hint extends Playable {
-  private static cartwall = document.querySelector(
-    "#cartwall"
-  ) as HTMLDivElement;
   private static hintTemplate = document.querySelector(
     "#hint-template"
   ) as HTMLTemplateElement;
@@ -90,7 +87,7 @@ export default class Hint extends Playable {
     }
 
     // Apply title, subtitle and tooltip
-    const cartTitle = cart.querySelector(".title") as HTMLHeadingElement;
+    const cartTitle = cart.querySelector("h4") as HTMLHeadingElement;
     cartTitle.innerHTML = usedData.title;
 
     const cartSubtitle = cart.querySelector(
@@ -119,8 +116,63 @@ export default class Hint extends Playable {
 
     this.setupProgressBar(cart.querySelector(".progress") as HTMLDivElement);
 
-    Hint.cartwall.append(cart);
+    let roomStr: String;
+    switch (this.hintData.room) {
+      case Room.YELLOW_ROOM:
+        roomStr = "yellow";
+        break;
+      case Room.ORANGE_ROOM:
+        roomStr = "orange";
+        break;
+      default:
+        roomStr = "both";
+    }
+
+    const cartwall = document.querySelector(
+      `#cartwall-${roomStr}`
+    ) as HTMLDivElement;
+    cartwall.append(cart);
     return cart;
+  }
+
+  static setupTabs(): void {
+    const yellowButton = document.querySelector(
+      "#tab-button-yellow"
+    ) as HTMLButtonElement;
+    const orangeButton = document.querySelector(
+      "#tab-button-orange"
+    ) as HTMLButtonElement;
+
+    yellowButton.onclick = () => {
+      Hint.switchCartwall("yellow");
+    };
+    orangeButton.onclick = () => {
+      Hint.switchCartwall("orange");
+    };
+  }
+
+  static switchCartwall(room: "yellow" | "orange"): void {
+    const tabs = document.querySelectorAll(
+      ".tab-content"
+    ) as NodeListOf<HTMLDivElement>;
+
+    tabs.forEach((tab) => {
+      tab.style.display = "none";
+    });
+
+    const tablinks = document.querySelectorAll(
+      ".tablink"
+    ) as NodeListOf<HTMLDivElement>;
+    tablinks.forEach((tablink) => {
+      tablink.className = tablink.className.replace(" active", "");
+    });
+    (
+      document.querySelector(`#cartwall-${room}`) as HTMLDivElement
+    ).style.display = "flex";
+
+    (
+      document.querySelector(`#tab-button-${room}`) as HTMLButtonElement
+    ).className += " active";
   }
 
   destroy(): void {

@@ -5,136 +5,172 @@ body {
   background-color: #f0f0f0;
 }
 
-#page-title {
-  text-align: center;
-  color: #333;
+.yellow {
+  background-color: #ddc767;
 }
 
-#page-content {
-  margin: 0 auto;
-  padding: 20px;
+.orange {
+  background-color: chocolate;
 }
 
 #page-content > * {
-  margin-bottom: 20px;
+  margin: 10px;
+  margin-top: 0;
+
+  border-radius: 10px;
 }
 
-#master-volume-wrapper {
-  margin-bottom: 20px;
-}
-
-#master-volume {
-  min-width: 300px;
-  width: 30%;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  color: #666;
-}
-
-#rooms-wrapper {
+.group {
   display: flex;
-  justify-content: space-between;
-}
-
-.room {
-  width: 48%;
-  box-sizing: border-box;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  display: flex;
-  flex-flow: column;
+  gap: 10px;
+  flex-direction: column;
   align-items: center;
+  margin-bottom: 10px;
 }
 
-.room,
-.cart,
-.outrocart {
+.group > h2 {
+  margin: 5px;
+}
+
+#rooms-container {
+  flex-direction: row;
+}
+
+#rooms-container > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  flex: 1;
+
+  border-radius: 10px;
+}
+
+.room > * {
+  margin: 5px;
+}
+
+#outros-container {
+  background-color: lightgray;
+}
+
+#hints-container {
+  background-color: lightgray;
+  padding: 5px;
+}
+
+#hints {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+#hints > * {
+  border-radius: 10px;
+}
+
+#hints > *:first-child {
+  width: 25%;
+}
+
+#hints > *:last-child {
+  width: 75%;
+}
+
+.carts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+
+  padding: 10px;
+}
+
+.cart {
+  border: 1px solid black;
+  border-radius: 10px;
   background-color: beige;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
 }
 
-.title {
-  font-weight: bold;
-  margin-top: 10px;
-  color: #333;
-  text-align: center;
+.cart > h4 {
+  margin: 5px;
 }
 
-.sound-title {
-  display: block;
-  margin-top: 10px;
-  color: #666;
+.cart > * {
+  margin-bottom: 5px;
 }
 
 button {
   background-color: darkred;
-  color: #fff;
+  color: beige;
+  border: none;
   padding: 10px;
-  margin: 5px;
-  cursor: pointer;
   border-radius: 10px;
+}
+
+/* Tooltip stuff */
+.tooltipbutton {
+  position: relative;
+}
+
+.tooltipbutton.active .tooltip {
+  visibility: visible;
+}
+
+.tooltip {
+  top: -10px;
+  transform: translate(-50%, -100%);
+  position: absolute;
+  z-index: 1;
+
+  padding: 5px;
+  border-radius: 10px;
+  width: 300px;
+
+  background-color: #000;
+
+  visibility: hidden;
+}
+
+/* Tabs */
+.tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.tablinks {
+  display: flex;
+}
+
+.tablink {
+  width: 50%;
+  border-radius: 0;
+  border-left: none;
+  color: black;
+}
+.tablink:first-child {
+  border-top-left-radius: 10px;
+}
+.tablink:last-child {
+  border-top-right-radius: 10px;
+}
+.tablink:not(.active) {
   border: 1px solid black;
 }
 
-#outro-container {
-  background-color: cadetblue;
+#cartwall-yellow,
+#cartwall-orange {
+  border-radius: 0 0 10px 10px;
+  flex: 1;
 }
 
-#cartwall-container {
-  background-color: lightgray;
-}
-
-.room,
-#outro-container,
-#cartwall-container {
-  padding: 10px;
-  border-radius: 20px;
-}
-
-.cart,
-.outrocart {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  min-width: 200px;
-  box-sizing: border-box;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-}
-
-.cart > *,
-.outrocart > * {
-  margin-bottom: 5px;
-}
-
-.cart-button-wrapper {
-  margin-top: auto;
-}
-
-#outros,
-#cartwall {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-}
-
-.yellow {
-  background-color: khaki;
-}
-
-.orange {
-  background-color: #f29019;
-}
-
-/***************************/
-/* VVV Language switch VVV */
-/***************************/
+/* Language switch */
 
 #lang-switch {
   position: absolute;
@@ -242,40 +278,4 @@ input.check-toggle-round-flat + label:after {
 
 input.check-toggle-round-flat:checked + label:after {
   margin-left: 44px;
-}
-
-/* Tooltip stuff */
-.tooltipbutton {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-  cursor: pointer;
-}
-
-.tooltipbutton .tooltip {
-  top: -10px;
-  visibility: hidden;
-  width: 300px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  position: absolute;
-  z-index: 1;
-
-  transform: translate(-50%, -100%);
-}
-
-.tooltipbutton.active .tooltip {
-  visibility: visible;
-}
-
-progress {
-  width: 100px;
-}
-
-.progress {
-  display: flex;
 }

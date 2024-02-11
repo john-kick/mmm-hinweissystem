@@ -89,6 +89,8 @@ export default class App {
     this.hintsData.forEach((hintData: HintData) => {
       this.hints.push(new Hint(hintData));
     });
+
+    Hint.setupTabs();
   }
 
   private setupOutros() {
