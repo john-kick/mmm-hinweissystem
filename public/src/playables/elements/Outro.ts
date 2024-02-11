@@ -74,10 +74,6 @@ export default class Outro extends Playable {
     const lang = App.getInstance().getLanguage();
     const usedData = this.outroData[lang as keyof OutroData];
 
-    this.audio = Playable.getAudioElement(
-      OUTRO_PATH + lang + "\\" + usedData.filename
-    );
-
     // Get the cart element
     const cart = document
       .importNode(Outro.outroTemplate.content, true)
@@ -97,6 +93,12 @@ export default class Outro extends Playable {
     stopButton.onclick = () => {
       this.reset();
     };
+
+    this.audio = Playable.getAudioElement(
+      OUTRO_PATH + lang + "\\" + usedData.filename
+    );
+
+    this.setupProgressBar(cart.querySelector(".progress") as HTMLDivElement);
 
     Outro.outroCartwall.append(cart);
     return cart;

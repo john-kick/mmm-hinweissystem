@@ -31,6 +31,7 @@ body {
 label {
   display: block;
   margin-bottom: 5px;
+  margin-right: 5px;
   color: #666;
 }
 
@@ -269,4 +270,12 @@ input.check-toggle-round-flat:checked + label:after {
 
 .tooltipbutton.active .tooltip {
   visibility: visible;
+}
+
+progress {
+  width: 100px;
+}
+
+.progress {
+  display: flex;
 }

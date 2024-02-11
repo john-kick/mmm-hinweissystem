@@ -2,3 +2,5 @@ node_modules/
 audio/
 dist/
 soundConfig/
+
+.env

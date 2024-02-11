@@ -16,11 +16,6 @@ export default class BackgroundSound extends Playable {
   constructor(backgroundSoundData: BackgroundSoundData) {
     super();
 
-    this.audio = Playable.getAudioElement(
-      BACKGROUNDSOUND_PATH + backgroundSoundData.filename,
-      backgroundSoundData.room
-    );
-
     const color =
       backgroundSoundData.room === Room.YELLOW_ROOM ? "yellow" : "orange";
     const room = document.querySelector(`#room-${color}`) as HTMLDivElement;
@@ -37,6 +32,22 @@ export default class BackgroundSound extends Playable {
     };
     stopButton.onclick = () => {
       this.reset();
+    };
+
+    this.audio = Playable.getAudioElement(
+      BACKGROUNDSOUND_PATH + backgroundSoundData.filename,
+      backgroundSoundData.room
+    );
+
+    this.setupProgressBar(room.querySelector(".progress") as HTMLDivElement);
+  }
+
+  play(): void {
+    super.play();
+
+    this.audio.onended = () => {
+      this.audio.currentTime = 0;
+      this.audio.play();
     };
   }
 }

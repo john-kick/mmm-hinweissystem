@@ -38,23 +38,21 @@ export async function fadeBackground(target: number) {
   // Determine the stepsize and direction
   const stepSize = (diff * -1) / FADE_STEPS;
   const intervalDuration = FADE_DURATION / FADE_STEPS;
-
   let stepsTaken = 0;
 
   return new Promise<void>((resolve) => {
     app.fadeInterval = setInterval(() => {
       app.getBackgroundsoundsArray().forEach((room) => {
-        // Clamp audio volume between 0 and the master volume
-        room.setVolume(
-          Math.min(Math.max(room.getVolume() - stepSize, 0), +app.masterVolume)
-        );
+        // Clamp audio volume between 0 and 1
+        room.setVolume(Math.min(Math.max(room.getVolume() - stepSize, 0), 1));
       });
 
-      console.log(`${++stepsTaken}/${FADE_STEPS}`, refAudio.getVolume());
+      stepsTaken++;
+      console.log(`${stepsTaken}/${FADE_STEPS}`, refAudio.getVolume());
 
       // Stop if target has been reached or overshot
       if (stepsTaken >= FADE_STEPS) {
-        refAudio.setVolume(target * app.masterVolume);
+        refAudio.setVolume(target);
         clearInterval(app.fadeInterval);
         resolve();
       }

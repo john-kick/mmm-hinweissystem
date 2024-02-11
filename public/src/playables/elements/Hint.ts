@@ -77,11 +77,6 @@ export default class Hint extends Playable {
     const lang = App.getInstance().getLanguage();
     const usedData = this.hintData[lang as keyof HintData] as HintLanguageData;
 
-    this.audio = Playable.getAudioElement(
-      HINT_PATH + lang + "\\" + usedData.filename,
-      this.hintData.room
-    );
-
     // Get the cart object
     const cart = document
       .importNode(Hint.hintTemplate.content, true)
@@ -105,7 +100,6 @@ export default class Hint extends Playable {
 
     const cartTooltip = cart.querySelector(".tooltiptext") as HTMLButtonElement;
     cartTooltip.innerText = usedData.transcript;
-    console.log(usedData.transcript);
 
     // Initialize audio buttons
     const playButton = cart.querySelector(".playbutton") as HTMLButtonElement;
@@ -117,6 +111,13 @@ export default class Hint extends Playable {
     stopButton.onclick = () => {
       this.reset();
     };
+
+    this.audio = Playable.getAudioElement(
+      HINT_PATH + lang + "\\" + usedData.filename,
+      this.hintData.room
+    );
+
+    this.setupProgressBar(cart.querySelector(".progress") as HTMLDivElement);
 
     Hint.cartwall.append(cart);
     return cart;

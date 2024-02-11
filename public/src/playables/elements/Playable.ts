@@ -73,4 +73,44 @@ export default abstract class Playable {
     this.pause();
     this.audio.currentTime = 0;
   }
+
+  setupProgressBar(container: HTMLDivElement): void {
+    const progressLabel = container.querySelector(
+      ".progress-label"
+    ) as HTMLLabelElement;
+    const progressBar = container.querySelector(
+      "progress"
+    ) as HTMLProgressElement;
+
+    this.audio.onloadeddata = () => {
+      progressLabel.innerText = this.updateProgressLabel(
+        this.audio.currentTime,
+        this.audio.duration
+      );
+
+      this.audio.ontimeupdate = () => {
+        progressBar.value = this.audio.currentTime / this.audio.duration;
+        progressLabel.innerText = this.updateProgressLabel(
+          this.audio.currentTime,
+          this.audio.duration
+        );
+      };
+    };
+  }
+
+  private updateProgressLabel(current: number, max: number): string {
+    const currMinutes = Math.floor(current / 60);
+    const currRemainingSeconds = Math.floor(current % 60);
+    const currFormattedTime = `${currMinutes}:${
+      currRemainingSeconds < 10 ? "0" : ""
+    }${currRemainingSeconds}`;
+
+    const maxMinutes = Math.floor(max / 60);
+    const maxRemainingSeconds = Math.floor(max % 60);
+    const maxFormattedTime = `${maxMinutes}:${
+      maxRemainingSeconds < 10 ? "0" : ""
+    }${maxRemainingSeconds}`;
+
+    return `${currFormattedTime}/${maxFormattedTime}`;
+  }
 }
