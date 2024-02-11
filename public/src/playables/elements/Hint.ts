@@ -79,13 +79,6 @@ export default class Hint extends Playable {
       .importNode(Hint.hintTemplate.content, true)
       .querySelector(".cart") as HTMLDivElement;
 
-    // Apply color if room specific
-    if (this.hintData.room === Room.YELLOW_ROOM) {
-      cart.classList.add("yellow");
-    } else if (this.hintData.room === Room.ORANGE_ROOM) {
-      cart.classList.add("orange");
-    }
-
     // Apply title, subtitle and tooltip
     const cartTitle = cart.querySelector("h4") as HTMLHeadingElement;
     cartTitle.innerHTML = usedData.title;
@@ -166,13 +159,27 @@ export default class Hint extends Playable {
     tablinks.forEach((tablink) => {
       tablink.className = tablink.className.replace(" active", "");
     });
-    (
-      document.querySelector(`#cartwall-${room}`) as HTMLDivElement
-    ).style.display = "flex";
 
-    (
-      document.querySelector(`#tab-button-${room}`) as HTMLButtonElement
-    ).className += " active";
+    const hintsContainer = document.querySelector(
+      "#hints-container"
+    ) as HTMLDivElement;
+    hintsContainer.classList.remove("yellow", "orange");
+
+    const cartWall = document.querySelector(
+      `#cartwall-${room}`
+    ) as HTMLDivElement;
+    cartWall.style.display = "flex";
+
+    const tablink = document.querySelector(
+      `#tab-button-${room}`
+    ) as HTMLButtonElement;
+    tablink.className += " active";
+
+    hintsContainer.classList.add(room);
+    const outros = document.querySelector(
+      "#outros-container"
+    ) as HTMLDivElement;
+    outros.style.display = room === "orange" ? "block" : "none";
   }
 
   destroy(): void {

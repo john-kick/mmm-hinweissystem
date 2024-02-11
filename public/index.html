@@ -58,32 +58,39 @@
           </div>
         </div>
       </div>
-      <div id="outros-container" class="group">
-        <h2>Outros</h2>
-        <div id="outros" class="carts"></div>
-      </div>
-      <div id="hints-container" class="group">
-        <h2>HINTS</h2>
-        <div id="hints">
-          <div>
-            <center><h2>Beide Räume</h2></center>
-            <div id="cartwall-both" class="carts"></div>
-          </div>
-          <div class="tab">
-            <div class="tablinks">
-              <button id="tab-button-yellow" class="tablink yellow active">
-                <h3>Gelber Raum</h3>
-              </button>
-              <button id="tab-button-orange" class="tablink orange">
-                <h3>Orangener Raum</h3>
-              </button>
+      <div class="tab">
+        <div class="tablinks">
+          <button id="tab-button-yellow" class="tablink yellow active">
+            <h3>Gelber Raum</h3>
+          </button>
+          <button id="tab-button-orange" class="tablink orange">
+            <h3>Orangener Raum</h3>
+          </button>
+        </div>
+        <div>
+          <div id="hints-container" class="group yellow">
+            <h2>HINWEISE</h2>
+            <div id="carts">
+              <div id="hints">
+                <div id="both-rooms">
+                  <center><h2>Beide Räume</h2></center>
+                  <div id="cartwall-both" class="carts"></div>
+                </div>
+                <div
+                  id="cartwall-yellow"
+                  class="tab-content carts yellow"
+                ></div>
+                <div
+                  id="cartwall-orange"
+                  class="tab-content carts orange"
+                  style="display: none"
+                ></div>
+                <div id="outros-container" style="display: none">
+                  <center><h2>Outros</h2></center>
+                  <div id="outros" class="carts"></div>
+                </div>
+              </div>
             </div>
-            <div id="cartwall-yellow" class="tab-content carts yellow"></div>
-            <div
-              id="cartwall-orange"
-              class="tab-content carts orange"
-              style="display: none"
-            ></div>
           </div>
         </div>
       </div>
