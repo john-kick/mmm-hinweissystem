@@ -44,7 +44,7 @@ export default class Hint extends Playable {
     let skipFadeout = this.handlePreviousHints(app);
 
     if (!skipFadeout) {
-      await fadeBackground(0.2);
+      await fadeBackground(0.1);
     }
 
     super.play();
