@@ -106,32 +106,6 @@ export default class App {
     };
   }
 
-  setupTooltipBehavior() {
-    document.querySelectorAll(".tooltipbutton").forEach((tooltipbutton) => {
-      const tooltip = tooltipbutton.querySelector(".tooltip") as HTMLDivElement;
-      tooltip.onclick = (event: MouseEvent) => {
-        event.stopPropagation();
-      };
-      const offclickBehavior = (event: MouseEvent) => {
-        if (
-          tooltipbutton.classList.contains("active") &&
-          !(event.target === tooltip || event.target === tooltipbutton)
-        ) {
-          tooltipbutton.classList.remove("active");
-          document.removeEventListener("click", offclickBehavior);
-        }
-      };
-      tooltipbutton.addEventListener("click", () => {
-        if (tooltipbutton.classList.contains("active")) {
-          tooltipbutton.classList.remove("active");
-        } else {
-          tooltipbutton.classList.add("active");
-          document.addEventListener("click", offclickBehavior);
-        }
-      });
-    });
-  }
-
   public async setup() {
     await fetch("./soundConfig/hints.json")
       .then((res) => res.json())
@@ -173,7 +147,5 @@ export default class App {
     this.setupHints();
     this.setupOutros();
     this.setupBackgroundSounds();
-
-    this.setupTooltipBehavior();
   }
 }
