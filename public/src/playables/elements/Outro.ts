@@ -1,5 +1,5 @@
 import App from "../../App";
-import Playable from "./Playable";
+import Playable, { Room } from "./Playable";
 import { fadeBackground } from "../../VolumeControl";
 import Hint from "./Hint";
 import BackgroundSound from "./BackgroundSound";
@@ -91,11 +91,12 @@ export default class Outro extends Playable {
       this.play();
     };
     stopButton.onclick = () => {
-      this.reset();
+      this.stop();
     };
 
     this.audio = Playable.getAudioElement(
-      OUTRO_PATH + lang + "\\" + usedData.filename
+      OUTRO_PATH + lang + "\\" + usedData.filename,
+      Room.BOTH
     );
 
     this.setupProgressBar(cart.querySelector(".progress") as HTMLDivElement);

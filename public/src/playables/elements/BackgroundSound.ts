@@ -31,7 +31,7 @@ export default class BackgroundSound extends Playable {
       this.pause();
     };
     stopButton.onclick = () => {
-      this.reset();
+      this.stop();
     };
 
     this.audio = Playable.getAudioElement(

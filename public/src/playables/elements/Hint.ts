@@ -7,7 +7,7 @@ const HINT_PATH = ".\\audio\\hinweise\\";
 export interface HintJSONData {
   de: HintLanguageData;
   en: HintLanguageData;
-  room?: string;
+  room: string;
 }
 
 interface HintLanguageData {
@@ -20,7 +20,7 @@ interface HintLanguageData {
 export interface HintData {
   de: HintLanguageData;
   en: HintLanguageData;
-  room?: Room;
+  room: Room;
 }
 
 export default class Hint extends Playable {
@@ -50,7 +50,7 @@ export default class Hint extends Playable {
     super.play();
 
     this.audio.onended = async () => {
-      console.log("ended");
+      this.reset();
       await fadeBackground(1);
     };
   }
@@ -118,7 +118,8 @@ export default class Hint extends Playable {
     this.setupTooltipButton(tipButton);
 
     this.audio = Playable.getAudioElement(
-      HINT_PATH + App.getInstance().getLanguage() + "\\" + usedData.filename
+      HINT_PATH + App.getInstance().getLanguage() + "\\" + usedData.filename,
+      this.hintData.room === Room.YELLOW_ROOM ? Room.YELLOW_ROOM : Room.BOTH
     );
 
     this.setupProgressBar(cart.querySelector(".progress") as HTMLDivElement);
@@ -149,14 +150,8 @@ export default class Hint extends Playable {
   }
 
   private getRoomString(): string {
-    switch (this.hintData.room) {
-      case Room.YELLOW_ROOM:
-        return "yellow";
-      case Room.ORANGE_ROOM:
-        return "orange";
-      default:
-        return "both";
-    }
+    if (this.hintData.room === Room.YELLOW_ROOM) return "yellow";
+    else return "orange";
   }
 
   static setupTabs(): void {

@@ -70,7 +70,6 @@ export default abstract class Playable {
   }
 
   reset(): void {
-    this.pause();
     this.audio.currentTime = 0;
   }
 
