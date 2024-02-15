@@ -59,10 +59,12 @@ export default class App {
     }
 
     this.hints.forEach((hint) => {
+      hint.stop();
       hint.destroy();
     });
 
     this.outros.forEach((outro) => {
+      outro.stop();
       outro.destroy();
     });
 

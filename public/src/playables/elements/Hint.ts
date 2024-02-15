@@ -78,7 +78,8 @@ export default class Hint extends Playable {
 
     app.hints.forEach((hint) => {
       skipFadeout = skipFadeout || !hint.getPaused();
-      hint.stop();
+      hint.pause();
+      hint.reset();
     });
 
     return skipFadeout;
