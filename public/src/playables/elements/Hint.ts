@@ -50,13 +50,14 @@ export default class Hint extends Playable {
     super.play();
 
     this.audio.onended = async () => {
-      this.reset();
+      console.log("ended");
       await fadeBackground(1);
     };
   }
 
   stop(): void {
     super.stop();
+    this.audio.dispatchEvent(new Event("ended"));
   }
 
   render(): HTMLDivElement {
@@ -113,12 +114,11 @@ export default class Hint extends Playable {
     const tipButton = cart.querySelector(".tooltipbutton") as HTMLButtonElement;
 
     playButton.onclick = () => this.play();
-    stopButton.onclick = () => this.reset();
+    stopButton.onclick = () => this.stop();
     this.setupTooltipButton(tipButton);
 
     this.audio = Playable.getAudioElement(
-      HINT_PATH + App.getInstance().getLanguage() + "\\" + usedData.filename,
-      this.hintData.room
+      HINT_PATH + App.getInstance().getLanguage() + "\\" + usedData.filename
     );
 
     this.setupProgressBar(cart.querySelector(".progress") as HTMLDivElement);
