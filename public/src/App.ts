@@ -134,7 +134,7 @@ export default class App {
   }
 
   public async setup() {
-    await fetch("./soundConfig/hints.json")
+    await fetch("./soundConfig/hinweise.json")
       .then((res) => res.json())
       .then((data: HintsData) => {
         this.hintsData = data;
@@ -146,7 +146,7 @@ export default class App {
         this.outrosData = data;
       });
 
-    await fetch("./soundConfig/backgroundSounds.json")
+    await fetch("./soundConfig/hintergrundsounds.json")
       .then((res) => res.json())
       .then((data: BackgroundSoundJSONData[]) => {
         this.backgroundsoundsData = data.map((backgroundsoundData) => {
