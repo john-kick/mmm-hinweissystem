@@ -17,10 +17,12 @@ export default abstract class Playable {
   ): HTMLAudioElement {
     // Create an HTMLAudioElement and append the file as a source
     let audio = new Audio();
+    audio.preload = "none";
     let src = document.createElement("source");
     src.type = "audio/mpeg";
     src.src = filepath;
     audio.appendChild(src);
+    audio.load();
 
     // Create a panNode and pan the sound to the correct audio channel
     const audioCtx = new AudioContext();

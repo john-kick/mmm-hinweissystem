@@ -4,6 +4,7 @@ const path = require("path");
 const router = express.Router();
 
 router.get("/audio/*", (req, res) => {
+  res.set("Content-Type", "audio/mpeg");
   res.sendFile(path.join(__dirname, "..", "public", "audio", req.params[0]));
 });
 
