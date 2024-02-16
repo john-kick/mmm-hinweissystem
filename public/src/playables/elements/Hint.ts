@@ -4,10 +4,16 @@ import { fadeBackground } from "../../VolumeControl";
 
 const HINT_PATH = ".\\audio\\hinweise\\";
 
-export interface HintJSONData {
-  de: HintLanguageData;
-  en: HintLanguageData;
-  room?: string;
+export interface HintsData {
+  yellow: JSONHintSection[];
+  orange: JSONHintSection[];
+  both: JSONHintSection[];
+}
+
+export interface JSONHintSection {
+  id: string;
+  name: string;
+  hints: HintData[];
 }
 
 interface HintLanguageData {
@@ -17,10 +23,9 @@ interface HintLanguageData {
   filename: string;
 }
 
-export interface HintData {
+interface HintData {
   de: HintLanguageData;
   en: HintLanguageData;
-  room?: Room;
 }
 
 export default class Hint extends Playable {
@@ -28,9 +33,17 @@ export default class Hint extends Playable {
     "#hint-template"
   ) as HTMLTemplateElement;
 
+  public static sectionTemplate = document.querySelector(
+    "#hint-section-template"
+  ) as HTMLTemplateElement;
+
   private cart: HTMLDivElement;
 
-  constructor(private hintData: HintData) {
+  constructor(
+    private hintData: HintData,
+    private room: Room,
+    private section: HTMLDivElement
+  ) {
     super();
     this.cart = this.render();
   }
@@ -66,10 +79,7 @@ export default class Hint extends Playable {
 
     const cart = this.createCartElement(usedData);
 
-    const cartwall = document.querySelector(
-      `#cartwall-${this.getRoomString()}`
-    ) as HTMLDivElement;
-    cartwall.append(cart);
+    this.section.append(cart);
     return cart;
   }
 
@@ -118,8 +128,8 @@ export default class Hint extends Playable {
     stopButton.onclick = () => this.stop();
     this.setupTooltipButton(tipButton);
 
-    let room = this.hintData.room;
-    if (!this.hintData.room || this.hintData.room === Room.ORANGE_ROOM) {
+    let room = this.room;
+    if (!this.room || this.room === Room.ORANGE_ROOM) {
       room = Room.BOTH;
     }
 
@@ -155,8 +165,8 @@ export default class Hint extends Playable {
     });
   }
 
-  private getRoomString(): string {
-    switch (this.hintData.room) {
+  static getRoomString(room: Room): string {
+    switch (room) {
       case Room.YELLOW_ROOM:
         return "yellow";
       case Room.ORANGE_ROOM:

@@ -87,6 +87,87 @@ body {
   margin: 5px;
 }
 
+.section {
+  padding: 5px;
+  border-radius: 10px;
+  height: fit-content;
+  width: fit-content;
+}
+
+.section-title {
+  margin: 10px;
+}
+
+#section-1 {
+  background-color: aquamarine;
+  border: 2px solid limegreen;
+}
+
+#section-2 {
+  background-color: bisque;
+  border: 2px solid darkorange;
+}
+
+#section-3 {
+  background-color: lavender;
+  border: 2px solid mediumslateblue;
+}
+
+#section-4 {
+  background-color: lightcoral;
+  border: 2px solid darkred;
+}
+
+#section-5 {
+  background-color: lightgoldenrodyellow;
+  border: 2px solid goldenrod;
+}
+
+#section-6 {
+  background-color: lightsteelblue;
+  border: 2px solid steelblue;
+}
+
+#section-7 {
+  background-color: peachpuff;
+  border: 2px solid peru;
+}
+
+#section-8 {
+  background-color: lightgreen;
+  border: 2px solid forestgreen;
+}
+
+#section-9 {
+  background-color: cornflowerblue;
+  border: 2px solid royalblue;
+}
+
+#section-10 {
+  background-color: lightpink;
+  border: 2px solid darkred;
+}
+
+#section-11 {
+  background-color: lavenderblush;
+  border: 2px solid plum;
+}
+
+#section-12 {
+  background-color: lightseagreen;
+  border: 2px solid darkcyan;
+}
+
+#section-13 {
+  background-color: mistyrose;
+  border: 2px solid darkred;
+}
+
+#section-14 {
+  background-color: lightgray;
+  border: 2px solid dimgray;
+}
+
 #carts {
   width: 100%;
 }
@@ -150,20 +231,23 @@ button {
   position: relative;
 }
 
+.tooltipbutton.active {
+  background-color: cornflowerblue;
+}
+
 .tooltipbutton.active .tooltip {
   visibility: visible;
 }
 
 .tooltip {
-  top: -10px;
-  transform: translate(-50%, -100%);
-  position: absolute;
+  position: fixed;
+  bottom: 10px;
+  left: 5%;
+  width: 90%;
   z-index: 1;
 
   padding: 5px;
   border-radius: 10px;
-  width: 300px;
-
   background-color: #000;
 
   visibility: hidden;

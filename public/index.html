@@ -20,17 +20,16 @@
     </div>
     <div id="page-content">
       <div id="master-volume-wrapper">
-        <center>
-          <label for="master-volume">Master-Lautstärke</label>
-          <input
-            id="master-volume"
-            type="range"
-            min="0"
-            max="1"
-            value="1"
-            step="0.01"
-          />
-        </center>
+        <label for="master-volume">Master-Lautstärke</label>
+        <br />
+        <input
+          id="master-volume"
+          type="range"
+          min="0"
+          max="1"
+          value="1"
+          step="0.01"
+        />
       </div>
       <div id="rooms-container" class="group">
         <div id="room-yellow" class="room yellow">
@@ -106,6 +105,11 @@
           <label class="progress-label"></label>
           <progress value="0" max="1"></progress>
         </div>
+      </div>
+    </template>
+    <template id="hint-section-template">
+      <div class="section">
+        <center><h3 class="section-title"></h3></center>
       </div>
     </template>
     <template id="hint-template">

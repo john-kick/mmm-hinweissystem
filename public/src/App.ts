@@ -1,9 +1,9 @@
-import Hint, { HintData, HintJSONData } from "./playables/elements/Hint";
-import Outro, { OutroData } from "./playables/elements/Outro";
 import BackgroundSound, {
   BackgroundSoundData,
   BackgroundSoundJSONData,
 } from "./playables/elements/BackgroundSound";
+import Hint, { HintsData, JSONHintSection } from "./playables/elements/Hint";
+import Outro, { OutroData } from "./playables/elements/Outro";
 import { Room } from "./playables/elements/Playable";
 
 interface BackgroundSounds {
@@ -12,7 +12,7 @@ interface BackgroundSounds {
 }
 
 export default class App {
-  private hintsData!: HintData[];
+  private hintsData!: HintsData;
   private outrosData!: OutroData[];
   private backgroundsoundsData!: BackgroundSoundData[];
 
@@ -87,12 +87,37 @@ export default class App {
 
   public masterVolume: number = 1;
 
-  private setupHints() {
-    this.hintsData.forEach((hintData: HintData) => {
-      this.hints.push(new Hint(hintData));
-    });
+  private setupHintsForRoom(roomData: JSONHintSection[], room: Room) {
+    roomData.forEach((section) => {
+      let sectionDiv = document.querySelector(`#${section.id}`);
+      if (!sectionDiv) {
+        sectionDiv = document
+          .importNode(Hint.sectionTemplate.content, true)
+          .querySelector(".section") as HTMLDivElement;
+        sectionDiv.id = section.id;
 
-    Hint.setupTabs();
+        const sectionTitle = sectionDiv.querySelector(
+          ".section-title"
+        ) as HTMLHeadingElement;
+        sectionTitle.innerText = section.name;
+
+        (
+          document.querySelector(
+            `#cartwall-${Hint.getRoomString(room)}`
+          ) as HTMLDivElement
+        ).append(sectionDiv);
+      }
+
+      section.hints.forEach((hint) => {
+        this.hints.push(new Hint(hint, room, sectionDiv as HTMLDivElement));
+      });
+    });
+  }
+
+  private setupHints() {
+    this.setupHintsForRoom(this.hintsData.yellow, Room.YELLOW_ROOM);
+    this.setupHintsForRoom(this.hintsData.orange, Room.ORANGE_ROOM);
+    this.setupHintsForRoom(this.hintsData.both, Room.BOTH);
   }
 
   private setupOutros() {
@@ -111,19 +136,8 @@ export default class App {
   public async setup() {
     await fetch("./soundConfig/hints.json")
       .then((res) => res.json())
-      .then((data: HintJSONData[]) => {
-        this.hintsData = data.map((hintData: HintJSONData) => {
-          return {
-            de: hintData.de,
-            en: hintData.en,
-            room:
-              hintData.room === "gelb"
-                ? Room.YELLOW_ROOM
-                : hintData.room === "orange"
-                ? Room.ORANGE_ROOM
-                : Room.BOTH,
-          };
-        });
+      .then((data: HintsData) => {
+        this.hintsData = data;
       });
 
     await fetch("./soundConfig/outros.json")
@@ -146,6 +160,7 @@ export default class App {
         });
       });
 
+    Hint.setupTabs();
     this.setupHints();
     this.setupOutros();
     this.setupBackgroundSounds();

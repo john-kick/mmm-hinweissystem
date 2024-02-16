@@ -48,7 +48,6 @@ export async function fadeBackground(target: number) {
       });
 
       stepsTaken++;
-      console.log(`${stepsTaken}/${FADE_STEPS}`, refAudio.getVolume());
 
       // Stop if target has been reached or overshot
       if (stepsTaken >= FADE_STEPS) {
