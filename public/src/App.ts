@@ -1,10 +1,10 @@
 import BackgroundSound, {
   BackgroundSoundData,
   BackgroundSoundJSONData,
-} from "./playables/elements/BackgroundSound";
-import Hint, { HintsData, JSONHintSection } from "./playables/elements/Hint";
-import Outro, { OutroData } from "./playables/elements/Outro";
-import { Room } from "./playables/elements/Playable";
+} from "./playables/BackgroundSound";
+import Hint, { HintsData, JSONHintSection } from "./playables/Hint";
+import Outro, { OutroData } from "./playables/Outro";
+import { Room } from "./playables/Playable";
 
 interface BackgroundSounds {
   sound1: BackgroundSound;

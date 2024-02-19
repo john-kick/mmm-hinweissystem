@@ -1,4 +1,4 @@
-import App from "../../App";
+import App from "../App";
 
 export enum Room {
   YELLOW_ROOM = -1,

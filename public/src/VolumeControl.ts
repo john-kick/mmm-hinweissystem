@@ -1,5 +1,5 @@
 import App from "./App";
-import Playable from "./playables/elements/Playable";
+import Playable from "./playables/Playable";
 
 const FADE_DURATION = 1000;
 const FADE_STEPS = 20;

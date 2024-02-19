@@ -1,6 +1,6 @@
-import App from "../../App";
+import App from "../App";
 import Playable, { Room } from "./Playable";
-import { fadeBackground } from "../../VolumeControl";
+import { fadeBackground } from "../VolumeControl";
 import Hint from "./Hint";
 import BackgroundSound from "./BackgroundSound";
 
