@@ -84,8 +84,8 @@ export default class Outro extends Playable {
     cartTitle.innerHTML = usedData.title;
 
     // Initialize sound control
-    const playButton = cart.querySelector(".playbutton") as HTMLButtonElement;
-    const stopButton = cart.querySelector(".stopbutton") as HTMLButtonElement;
+    const playButton = cart.querySelector(".play-button") as HTMLButtonElement;
+    const stopButton = cart.querySelector(".stop-button") as HTMLButtonElement;
 
     playButton.onclick = () => {
       this.play();

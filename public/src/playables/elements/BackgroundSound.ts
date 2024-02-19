@@ -20,9 +20,11 @@ export default class BackgroundSound extends Playable {
       backgroundSoundData.room === Room.YELLOW_ROOM ? "yellow" : "orange";
     const room = document.querySelector(`#room-${color}`) as HTMLDivElement;
 
-    const playButton = room.querySelector(".playbutton") as HTMLButtonElement;
-    const pauseButton = room.querySelector(".pausebutton") as HTMLButtonElement;
-    const stopButton = room.querySelector(".stopbutton") as HTMLButtonElement;
+    const playButton = room.querySelector(".play-button") as HTMLButtonElement;
+    const pauseButton = room.querySelector(
+      ".pause-button"
+    ) as HTMLButtonElement;
+    const stopButton = room.querySelector(".stop-button") as HTMLButtonElement;
 
     playButton.onclick = () => {
       this.play();

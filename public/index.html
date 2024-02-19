@@ -31,13 +31,13 @@
           step="0.01"
         />
       </div>
-      <div id="rooms-container" class="group">
+      <div id="rooms-container">
         <div id="room-yellow" class="room yellow">
           <h2>A1: Gelber Raum</h2>
           <div>
-            <button class="playbutton">Play</button>
-            <button class="pausebutton">Pause</button>
-            <button class="stopbutton">Stop</button>
+            <button class="play-button">Play</button>
+            <button class="pause-button">Pause</button>
+            <button class="stop-button">Stop</button>
           </div>
           <div class="progress">
             <label class="progress-label"></label>
@@ -47,9 +47,9 @@
         <div id="room-orange" class="room orange">
           <h2 class="title">A2: Orangener Raum</h2>
           <div>
-            <button class="playbutton">Play</button>
-            <button class="pausebutton">Pause</button>
-            <button class="stopbutton">Stop</button>
+            <button class="play-button">Play</button>
+            <button class="pause-button">Pause</button>
+            <button class="stop-button">Stop</button>
           </div>
           <div class="progress">
             <label class="progress-label"></label>
@@ -67,27 +67,25 @@
           </button>
         </div>
         <div>
-          <div id="hints-container" class="group yellow">
+          <div id="hints-container" class="yellow">
             <h2>HINWEISE</h2>
-            <div id="carts">
-              <div id="hints">
-                <div id="both-rooms">
-                  <center><h2>Beide Räume</h2></center>
-                  <div id="cartwall-both" class="carts"></div>
-                </div>
-                <div
-                  id="cartwall-yellow"
-                  class="tab-content carts yellow"
-                ></div>
-                <div
-                  id="cartwall-orange"
-                  class="tab-content carts orange"
-                  style="display: none"
-                ></div>
-                <div id="outros-container" style="display: none">
-                  <center><h2>Outros</h2></center>
-                  <div id="outros" class="carts"></div>
-                </div>
+            <div id="hints">
+              <div id="both-rooms">
+                <center><h2>Beide Räume</h2></center>
+                <div id="cartwall-both" class="carts"></div>
+              </div>
+              <div
+                id="cartwall-yellow"
+                class="tab-content carts yellow cartwall"
+              ></div>
+              <div
+                id="cartwall-orange"
+                class="tab-content carts orange cartwall"
+                style="display: none"
+              ></div>
+              <div id="outros-container" style="display: none">
+                <center><h2>Outros</h2></center>
+                <div id="outros" class="carts"></div>
               </div>
             </div>
           </div>
@@ -98,8 +96,8 @@
       <div class="cart">
         <h4></h4>
         <div class="cart-button-wrapper">
-          <button class="playbutton">Play</button>
-          <button class="stopbutton">Stop</button>
+          <button class="play-button">Play</button>
+          <button class="stop-button">Stop</button>
         </div>
         <div class="progress">
           <label class="progress-label"></label>
@@ -117,14 +115,14 @@
         <h4></h4>
         <span class="subtitle"></span>
         <div class="cart-button-wrapper">
-          <button class="playbutton">Play</button>
-          <button class="tooltipbutton">
+          <button class="play-button">Play</button>
+          <button class="tooltip-button">
             Tip
             <div class="tooltip">
               <span class="tooltiptext"></span>
             </div>
           </button>
-          <button class="stopbutton">Stop</button>
+          <button class="stop-button">Stop</button>
         </div>
         <div class="progress">
           <label class="progress-label"></label>

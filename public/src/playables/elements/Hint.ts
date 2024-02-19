@@ -120,9 +120,11 @@ export default class Hint extends Playable {
     cart: HTMLDivElement,
     usedData: HintLanguageData
   ): void {
-    const playButton = cart.querySelector(".playbutton") as HTMLButtonElement;
-    const stopButton = cart.querySelector(".stopbutton") as HTMLButtonElement;
-    const tipButton = cart.querySelector(".tooltipbutton") as HTMLButtonElement;
+    const playButton = cart.querySelector(".play-button") as HTMLButtonElement;
+    const stopButton = cart.querySelector(".stop-button") as HTMLButtonElement;
+    const tipButton = cart.querySelector(
+      ".tooltip-button"
+    ) as HTMLButtonElement;
 
     playButton.onclick = () => this.play();
     stopButton.onclick = () => this.stop();

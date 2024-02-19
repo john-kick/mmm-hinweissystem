@@ -197,4 +197,12 @@ Die Namen aller Audiodateien sind frei wählbar, solange sie mit den Namen in de
 
 # Customizing
 
-TODO
+Ich habe versucht allen Elementen passende IDs und Klasen zu geben um das Customizing zu vereinfachen. Einige dieser IDs und Klassen sind für die korrekte Funktion der App nötig. Am besten sollten keine IDs oder Klassennamen von Elementen geändert oder gelöscht werden.
+
+Ebenso sind manche Stylings für korrekte Funktion nötig (z.B. bei dem Sprachen-Schalter). Am besten sollte das Verhalten der App nach der Änderung des Stylings geprüft werden.
+
+Es können aber Problemlos Klassen zu Elementen hinzugefügt werden (ebenfalls IDs, wenn das Element noch keine ID besaß). Dabei sollte wie im oberen Paragraph darauf geachtet werden, dass die neuen Stylings nicht die Funktion der App beeinträchtigen.
+
+### Sektionen
+
+Die Carts der Hinweise sind in Sektionen eingeteilt. diese werden wie oben beschrieben in der hinweise.json definiert. Auf der Web-Oberfläche werden diese Sektionen so generiert, dass die in der .json angegebene ID auch die ID des Elements ist. Somit kann in css diese Sektion referenziert werden.
