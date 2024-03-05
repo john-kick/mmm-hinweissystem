@@ -34,7 +34,7 @@ Das Programm kann jetzt manuell über `node .\src\app.js` gestartet werden und i
 
 ### Verknüpfung erstellen
 
-Alternativ kann auch eine Verknüpfung auf die Datei `.\start.bat` erstellt werden. Damit muss die App immer mit einem Doppelklick gestartet werden. Daraufhin öffnet sich ein Konsolenfenster wo etwaige Fehler angezeigt werden.
+Alternativ kann auch eine Windows-Verknüpfung auf die Datei `.\start.bat` erstellt werden. Damit muss die App immer mit einem Doppelklick gestartet werden. Daraufhin öffnet sich ein Konsolenfenster wo etwaige Fehler angezeigt werden.
 
 ## Konfiguration
 
