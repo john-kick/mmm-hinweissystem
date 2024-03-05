@@ -8,5 +8,6 @@ const port = process.env.PORT;
 app.use("/", routes);
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running: http://localhost:${port}`);
+  console.log('To exit the programm hit "Ctrl+C" in this terminal window.');
 });

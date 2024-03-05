@@ -19,17 +19,37 @@
       <span class="off">EN</span>
     </div>
     <div id="page-content">
-      <div id="master-volume-wrapper">
-        <label for="master-volume">Master-Lautstärke</label>
-        <br />
-        <input
-          id="master-volume"
-          type="range"
-          min="0"
-          max="1"
-          value="1"
-          step="0.01"
-        />
+      <div class="dropdown">
+        <button class="dropbtn">Lautstärke</button>
+        <div class="dropdown-content">
+          <label for="master-volume">Master</label>
+          <input
+            id="master-volume"
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.01"
+          />
+          <label for="background-volume">Hintergrund</label>
+          <input
+            id="background-volume"
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.01"
+          />
+          <label for="hints-volume">Hinweise</label>
+          <input
+            id="hint-volume"
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.01"
+          />
+        </div>
       </div>
       <div id="rooms-container">
         <div id="room-yellow" class="room yellow">

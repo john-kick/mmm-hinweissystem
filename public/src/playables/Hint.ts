@@ -48,6 +48,11 @@ export default class Hint extends Playable {
     this.cart = this.render();
   }
 
+  public updateVolume(): void {
+    const app = App.getInstance();
+    this.audio.volume = app.masterVolume * app.hintVolume;
+  }
+
   public getCart(): HTMLDivElement {
     return this.cart;
   }
@@ -63,6 +68,7 @@ export default class Hint extends Playable {
     super.play();
 
     this.audio.onended = async () => {
+      console.log("hint ended");
       this.reset();
       await fadeBackground(1);
     };
@@ -70,7 +76,6 @@ export default class Hint extends Playable {
 
   stop(): void {
     super.stop();
-    this.audio.dispatchEvent(new Event("ended"));
   }
 
   render(): HTMLDivElement {

@@ -50,9 +50,7 @@ export default abstract class Playable {
     this.audio.volume = this.volume * app.masterVolume;
   }
 
-  public setMasterVolume(volume: number): void {
-    this.audio.volume = this.volume * volume;
-  }
+  public abstract updateVolume(): void;
 
   public getPaused(): boolean {
     return this.audio.paused;
@@ -69,6 +67,7 @@ export default abstract class Playable {
   stop(): void {
     this.audio.pause();
     this.reset();
+    this.audio.dispatchEvent(new Event("ended"));
   }
 
   reset(): void {

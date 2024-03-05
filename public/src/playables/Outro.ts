@@ -70,6 +70,11 @@ export default class Outro extends Playable {
     };
   }
 
+  public updateVolume(): void {
+    const app = App.getInstance();
+    this.audio.volume = app.masterVolume * app.hintVolume;
+  }
+
   render(): HTMLDivElement {
     const lang = App.getInstance().getLanguage();
     const usedData = this.outroData[lang as keyof OutroData];

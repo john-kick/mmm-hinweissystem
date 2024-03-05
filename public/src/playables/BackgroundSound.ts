@@ -1,3 +1,4 @@
+import App from "../App";
 import Playable, { Room } from "./Playable";
 
 const BACKGROUNDSOUND_PATH = ".\\audio\\hintergrundsounds\\";
@@ -42,14 +43,12 @@ export default class BackgroundSound extends Playable {
     );
 
     this.setupProgressBar(room.querySelector(".progress") as HTMLDivElement);
+
+    this.audio.loop = true;
   }
 
-  play(): void {
-    super.play();
-
-    this.audio.onended = () => {
-      this.audio.currentTime = 0;
-      this.audio.play();
-    };
+  public updateVolume(): void {
+    const app = App.getInstance();
+    this.audio.volume = app.masterVolume * app.backgroundVolume;
   }
 }

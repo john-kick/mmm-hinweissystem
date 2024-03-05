@@ -17,17 +17,7 @@ export default class App {
   private backgroundsoundsData!: BackgroundSoundData[];
 
   constructor() {
-    const masterVolumeEl = document.querySelector(
-      "#master-volume"
-    ) as HTMLInputElement;
-    masterVolumeEl.oninput = () => {
-      this.getBackgroundsoundsArray()
-        .concat(this.outros, this.hints)
-        .forEach((playable) => {
-          this.masterVolume = +masterVolumeEl.value;
-          playable.setMasterVolume(+masterVolumeEl.value);
-        });
-    };
+    this.setupVolumeControl();
 
     const langSwitch = document.querySelector(
       "#language-toggle"
@@ -36,6 +26,40 @@ export default class App {
     langSwitch.oninput = () => {
       const lang = langSwitch.checked ? "en" : "de";
       this.switchLanguage(lang);
+    };
+  }
+
+  setupVolumeControl() {
+    const masterVolumeEl = document.querySelector(
+      "#master-volume"
+    ) as HTMLInputElement;
+    masterVolumeEl.oninput = () => {
+      this.masterVolume = +masterVolumeEl.value;
+      this.getBackgroundsoundsArray()
+        .concat(this.outros, this.hints)
+        .forEach((playable) => {
+          playable.updateVolume();
+        });
+    };
+
+    const backgroundVolumeEl = document.querySelector(
+      "#background-volume"
+    ) as HTMLInputElement;
+    backgroundVolumeEl.oninput = () => {
+      this.backgroundVolume = +backgroundVolumeEl.value;
+      this.getBackgroundsoundsArray().forEach((background) => {
+        background.updateVolume();
+      });
+    };
+
+    const hintVolumeEl = document.querySelector(
+      "#hint-volume"
+    ) as HTMLInputElement;
+    hintVolumeEl.oninput = () => {
+      this.hintVolume = +hintVolumeEl.value;
+      this.hints.forEach((hint) => {
+        hint.updateVolume();
+      });
     };
   }
 
@@ -86,6 +110,8 @@ export default class App {
   public fadeInterval: NodeJS.Timeout | undefined;
 
   public masterVolume: number = 1;
+  public backgroundVolume: number = 1;
+  public hintVolume: number = 1;
 
   private setupHintsForRoom(roomData: JSONHintSection[], room: Room) {
     roomData.forEach((section) => {
