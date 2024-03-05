@@ -19,13 +19,22 @@ Stelle bei der Installation von Node sicher, dass der npm package manager mit in
 - Wechsle in das Projekt-Verzeichnis (`> cd path\to\mmm-hinweissystem`)
 - Führe `npm run i; npm run tsc` aus
   - Dies installiert die nötigen Libraries und transpiliert das Projekt
-- Das Programm kann jetzt manuell über `node .\src\app.js` gestartet werden und ist dann über `localhost` erreichbar
+
+### .env
+
+- Benenne die Datei ".env.example" zu ".env" um und setze den Port darin auf den gewünschten Wert
+
+Das Programm kann jetzt manuell über `node .\src\app.js` gestartet werden und ist dann über `localhost` erreichbar
 
 ### Windows-Service erstellen
 
-Öffne in einem Konsolenfenster das Projekt-Verzeichnis und führe `node .\src\setup-service.js` aus
+Öffne in einem Konsolenfenster das Projekt-Verzeichnis und führe `node .\setup-service.js` aus
 
 - Windows wird nach einigen Berechtigungen fragen, diesen muss zugestimmt werden
+
+### Verknüpfung erstellen
+
+Alternativ kann auch eine Verknüpfung auf die Datei `.\start.bat` erstellt werden. Damit muss die App immer mit einem Doppelklick gestartet werden. Daraufhin öffnet sich ein Konsolenfenster wo etwaige Fehler angezeigt werden.
 
 ## Konfiguration
 
